@@ -1,0 +1,29 @@
+<snippet>
+	<content><![CDATA[
+def egcd(a, b):
+	if a == 0:
+		return (b, 0, 1)
+	else:
+		g, y, x = egcd(b % a, a)
+		return (g, x - (b // a) * y, y)
+
+def modinv(a, m):
+	g, x, y = egcd(a, m)
+	if g != 1:
+		raise Exception('modular inverse does not exist')
+	else:
+		return x % m
+
+# N = 
+# e = 
+# p = 
+# q = 
+# d = modinv(e,(p-1)*(q-1))
+# c = 
+# m = pow(c, d, N)
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>rsa</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.python</scope>
+</snippet>

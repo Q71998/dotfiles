@@ -1,0 +1,21 @@
+<snippet>
+	<content><![CDATA[
+def RC4(data, key):
+	S = range(256);j = 0
+	for i in range(256):
+		j = (j + S[i] + ord(key[i%len(key)])) % 256
+		S[i], S[j] = S[j], S[i]
+	i = j = 0
+	res = ""
+	for d in data:
+		i = (i + 1) % 256
+		j = (j + S[i]) % 256
+		S[i], S[j] = S[j], S[i]
+		res += chr(ord(d) ^ S[(S[i] + S[j]) % 256])
+	return res 
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>rc4</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.python</scope>
+</snippet>

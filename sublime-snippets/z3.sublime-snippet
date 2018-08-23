@@ -1,0 +1,21 @@
+<snippet>
+	<content><![CDATA[
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+from z3 import *
+
+x = [BitVec("x_%d" % i, 8) for i in range(32)]
+
+s = Solver()
+s.add()
+
+assert s.check() == sat
+
+m = s.model()
+print "".join([chr(m[x[i]].as_long()) for i in range(32)])
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>z3</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.python</scope>
+</snippet>

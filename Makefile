@@ -12,6 +12,7 @@ all: clean
 	ln -s ${HOME}/.dotfiles/vimrc ${HOME}/.vimrc
 	mkdir -p ${HOME}/.vim/
 	ln -s ${HOME}/.dotfiles/vim-snippets ${HOME}/.vim/snippets
+	ln -s ${HOME}/.dotfiles/sublime-snippets ${HOME}/.config/sublime-text-3/Packages/User/snippets
 
 clean:
 	rm -rf ${HOME}/.bashrc

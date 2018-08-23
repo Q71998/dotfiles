@@ -1,0 +1,28 @@
+<snippet>
+	<content><![CDATA[
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+from pwn import *
+LOCAL = 1
+VERBOSE = 1
+DEBUG = 0
+context.arch = 'amd64'
+
+if VERBOSE:
+	context.log_level = 'debug'
+if LOCAL:
+	io = process('./bin', env={'LD_LIBRARY_PATH': './'})
+	# libc = ELF('./libc-2.23.so')
+else:
+	io = remote('10.131.1.19', 60001)
+	# libc = ELF('./libc-2.23.so')
+if DEBUG:
+	gdb.attach(io, 'b *0x0000000000400F89\n')
+
+io.interactive()
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>pwn</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.python</scope>
+</snippet>
