@@ -1,6 +1,7 @@
 all: clean
 	ln -s ${HOME}/.dotfiles/bashrc ${HOME}/.bashrc
 	ln -s ${HOME}/.dotfiles/ctfrc ${HOME}/.ctfrc
+	ln -s ${HOME}/.dotfiles/zshrc ${HOME}/.zshrc
 	ln -s ${HOME}/.dotfiles/gdbinit ${HOME}/.gdbinit
 	ln -s ${HOME}/.dotfiles/gitconfig ${HOME}/.gitconfig
 	ln -s ${HOME}/.dotfiles/inputrc ${HOME}/.inputrc
@@ -26,3 +27,4 @@ clean:
 	rm -rf ${HOME}/.idapro/idauser.cfg
 	rm -rf ${HOME}/.vimrc
 	rm -rf ${HOME}/.vim/snippets
+	rm -rf ${HOME}/.zshrc
