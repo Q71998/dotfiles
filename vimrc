@@ -53,6 +53,8 @@ let $LANG="en_US.utf-8"
 set encoding=utf-8
 set fileencodings=usc-bom,utf-8,big5,taiwan,chinese,default,latin1
 
+set nomodeline
+
 "==============================================================
 ">  VIM user interface
 "==============================================================
