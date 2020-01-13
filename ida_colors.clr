@@ -41,7 +41,7 @@ ffaaff	 //Regular unknown name
 00ffff	 //Collapsed line
 000000	 //Max color number
 232323	 //Line prefix: library function
-2a2a2a	 //Line prefix: regular function
+bfbfbd	 //Line prefix: regular function
 ffff00	 //Line prefix: instruction
 999999	 //Line prefix: data
 2e7bff	 //Line prefix: unexplored
@@ -63,11 +63,11 @@ ff00ff	 //External symbol
 00ff80	 //Cursor
 0080ff	 //Address
 [DEBUG]
-483c1a	 //Current IP
-6b4343	 //Current IP (+ enabled breakpoint)
+895427	 //Current IP
+0518e1	 //Current IP (+ enabled breakpoint)
 408020	 //Current IP (+ disabled breakpoint)
 21211a	 //Default background
-4c4cd8	 //Address (+ enabled breakpoint)
+0e018c	 //Address (+ enabled breakpoint)
 3e5c33	 //Address (+ disabled breakpoint)
 3c7d8f	 //Current IP (+ unavailable breakpoint)
 0080ff	 //Address (+ unavailable breakpoint)

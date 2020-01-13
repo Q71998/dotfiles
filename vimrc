@@ -18,7 +18,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'vim-scripts/L9'
     Plug 'othree/vim-autocomplpop'
     Plug 'ctrlpvim/ctrlp.vim'
-    Plug 'SirVer/ultisnips'
+    if has("python") || has("python3")
+        Plug 'SirVer/ultisnips'
+    endif
     Plug 'honza/vim-snippets'
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
@@ -26,7 +28,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-surround'
     Plug 'sheerun/vim-polyglot'
-    Plug 'kshenoy/vim-signature'
     Plug 'msanders/cocoa.vim'
 call plug#end()
 
@@ -52,6 +53,8 @@ let $LANG="en_US.utf-8"
 set encoding=utf-8
 set fileencodings=usc-bom,utf-8,big5,taiwan,chinese,default,latin1
 
+set nomodeline
+
 "==============================================================
 ">  VIM user interface
 "==============================================================
@@ -69,6 +72,9 @@ set ruler
 
 " Height of the command bar
 set cmdheight=1
+
+" show cmd
+set showcmd
 
 " A buffer becomes hidden when it is abandoned
 set hid
@@ -170,6 +176,7 @@ set tw=500
 
 set ai   " Auto indent
 set si   " Smart indent
+set ci   " C indent
 
 " Remove preview window
 set completeopt-=preview
@@ -233,12 +240,15 @@ map 0 ^
 autocmd! bufwritepost .vimrc source ~/.vimrc
 
 " Allow saving of files as sudo when I forgot to start vim using sudo.
-cmap w!! w !sudo tee > /dev/null %
+cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
 
 " Copy to system clipboard by Ctrl-C
 if has("mac") || has("macunix")
     vmap <silent><C-c> :w !pbcopy<CR><CR>
     noremap <silent><leader>c :w !pbcopy<CR><CR>
+elseif has("windows")
+    vmap <silent><C-c> :w !clip<CR><CR>
+    noremap <silent><leader>c :w !clip<CR><CR>
 endif
 
 " Daily routines
@@ -255,6 +265,12 @@ noremap <leader>v :vsplit <C-R>=expand("%:p:h")<CR>/
 
 " Redraw, useful in terminal when screen getr messed up
 nnoremap <leader>rr :redraw!<CR>
+
+" Replace tab with space
+nnoremap <leader><tab> :%s/\t/    /g<CR>
+
+" Remove trailing whitespace
+nnoremap <leader><space> :%s/\s\+$//e<CR>:noh<CR>
 
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
@@ -307,6 +323,7 @@ let g:ctrlp_custom_ignore = {
     \ }
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_cmd = 'CtrlPMRU'
+let g:ctrlp_switch_buffer = 'Et'
 
 " leader + b to open buffer list with ctrlp
 nmap <leader>b :CtrlPBuffer<CR>

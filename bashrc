@@ -53,12 +53,10 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    if [ -f /.dockerenv ]; then
-        PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[01;31m\]$(__git_ps1)\[\033[00m\]\$ '
-    elif [ "$(id -u)" = "0" ]; then
+    if [ "$(id -u)" = "0" ]; then
         PS1='\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[01;31m\]$(__git_ps1)\[\033[00m\]\$ '
     else
-        PS1='\[\033[38;5;214m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[01;31m\]$(__git_ps1)\[\033[00m\]\$ '
+        PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[01;31m\]$(__git_ps1)\[\033[00m\]\$ '
     fi
 else
     PS1='\u@\h:\w\$ '
@@ -91,25 +89,27 @@ __git_ps1()
 }
 
 [ -f ~/.ctfrc ] && . ~/.ctfrc
+[ -f /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
+[ -f ~/.pythonrc ] && export PYTHONSTARTUP="$HOME/.pythonrc"
 
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 
 export PATH=~/bin:$PATH
 export EDITOR=vim
-export PYTHONSTARTUP="$HOME/.pythonrc"
 export CLICOLOR=1
 export TERM=screen-256color
 export PIN_ROOT="$HOME/bin/pin"
 
 alias ..="cd .."
 alias gdb="gdb -q"
+alias gdbm="gdb-multiarch -q"
 alias pwndbg="gdb -x ~/pwndbg/gdbinit.py"
-alias tmux="tmux -2"
+alias tmux="history -n;tmux -2"
 alias rip="curl orange.tw"
-alias tip="curl --socks5 127.0.0.1:9150 orange.tw"
-alias tcurl="curl --socks5 127.0.0.1:9150 "
-alias tssh="ssh -o 'ProxyCommand /usr/bin/nc -x 127.0.0.1:9150 %h %p'"
+alias tip="curl --socks5 127.0.0.1:9050 orange.tw"
+alias tcurl="curl --socks5 127.0.0.1:9050 "
+alias tssh="ssh -o 'ProxyCommand /usr/bin/nc -x 127.0.0.1:9050 %h %p'"
 alias rssh="ssh -NfR 12345:localhost:22"
 alias lssh="ssh -NfL 12345:localhost:12345"
 alias strace="strace -ixv"
@@ -134,6 +134,7 @@ alias egrep='egrep --color=auto'
 # Less Colors for Man Pages
 export PAGER="$(which less) -s"
 export BROWSER="$PAGER"
+export LESS='-R'
 export LESS_TERMCAP_mb=$'\E[38;5;167m'  # begin blinking
 export LESS_TERMCAP_md=$'\E[38;5;39m'   # begin bold
 export LESS_TERMCAP_me=$'\E[0m'         # end mode
@@ -148,11 +149,11 @@ complete -W "$(cat ~/.ssh/known_hosts 2>&1|  cut -f 1 -d ' ' | sed -e s/,.*//g |
 
 # virtualenvwrapper
 if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
-    export WORKON_HOME=~/Env
+    export WORKON_HOME=~/.env
     source /usr/local/bin/virtualenvwrapper.sh
 fi
 
-function tunnel()
+tunnel()
 {
     if [ $# != 4 ]; then
         echo "tunnel <LOCAL PORT> <DEST HOST> <DEST PORT> <host>"
@@ -161,44 +162,26 @@ function tunnel()
     fi
 }
 
-# OSX and Cygwin
+docker-shell()
+{
+    docker exec -it $1 /bin/bash
+}
+
+# OSX / Windows
 if [ "$(uname)" == "Darwin" ]; then
+    PS1='\[\033[38;5;214m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[01;31m\]$(__git_ps1)\[\033[00m\]\$ '
     export LSCOLORS="Exfxcxdxbxegedabagacad"
+    export HOMEBREW_NO_ANALYTICS=1
     alias ls="ls -G"
-    alias hidedesk="defaults write com.apple.finder CreateDesktop false;killall Finder"
-    alias showdesk="defaults write com.apple.finder CreateDesktop true;killall Finder"
-elif [ "$(uname -o)" == "Cygwin" ]; then
-    chcp.com 437 > /dev/null    # set codepage to 437
-
-    if [ ! -z $BABUN_HOME ]; then 
-        # Fix babun bug of reload .bashrc
-        [[ -z ${USER_BASHRC} ]] && USER_BASHRC="1" || return
-
-        # Relink Tools folder for portable use
-        [[ -e ~/Tools/ ]] && rm -f ~/Tools
-            
-        export TOOLS=$(dirname $BABUN_HOME)
-        ln -s $TOOLS ~/Tools
-
-        export PATH=$PATH:$TOOLS:$TOOLS/java/bin
-        export JAVA_HOME=$TOOLS/java
-
-        alias big5="iconv -f big5"
-        alias sqlmap="~/Tools/sqlmap/sqlmap.py"
-        alias dex2jar="~/Tools/dex2jar/d2j-dex2jar.bat"
-        alias apktool="~/Tools/apktool/apktool.bat"
-
-        # pin
-        alias pin="~/Tools/pin/pin"
-        export PIN_ROOT="$TOOLS/pin"
-
-        # msvc
-        alias vc9="~/Tools/VC9/setenv"
-        alias vc12="~/Tools/VC12/setenv"
-        alias clexe="vc9 cl.exe /MD /EHsc /Oi /O2 /Gy /nologo "
-        alias cldll="vc9 cl.exe /LD /link "
-        alias deaslr="vc9 link.exe /edit /dynamicbase:NO "
-
-        unset PYTHONHOME
-    fi
+    alias deskshow="defaults write com.apple.finder CreateDesktop false;killall Finder"
+    alias deskhide="defaults write com.apple.finder CreateDesktop true;killall Finder"
+    alias bubu="brew update && brew upgrade && brew cleanup"
+    source $(brew --prefix)/etc/profile.d/autojump.sh
+elif [ "$(uname -o)" == "Msys" ]; then
+    export MSYS="winsymlinks:lnk"
+    alias python="winpty python"
+    alias ping="winpty ping"
+    alias ifconfig="ipconfig | iconv -f big5"
+    alias curl="curl -s"
 fi
+

