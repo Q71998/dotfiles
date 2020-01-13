@@ -12,4 +12,5 @@ ln -sf ${HOME}/.dotfiles/pythonrc ${HOME}/.pythonrc
 ln -sf ${HOME}/.dotfiles/tmux.conf ${HOME}/.tmux.conf
 ln -sf ${HOME}/.dotfiles/vimrc ${HOME}/.vimrc
 ln -sf ${HOME}/.dotfiles/vim-snippets ${HOME}/.vim/snippets
+ln -sf ${HOME}/.dotfiles/sublime-snippets ${HOME}/.config/sublime-text-3/Packages/User/snippets
 ln -sf ${HOME}/.dotfiles/idauser.cfg ${HOME}/.idapro/idauser.cfg
